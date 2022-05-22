@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>Roulette</title>
+        <link rel="stylesheet" href="roulette.css">
+        <script src="jquery-3.3.1.js"></script>
+        <script>
+            $(function() {
+                // 二重クリック防止
+                var start_flag = false;
+                // tableの中に任意の数だけtr・tdを作り、tdにidをつける
+                for(var i = 0; i < 4; i++) {
+                    var tr = $('<tr>')
+                    for(var j = 1; j <= 4; j++) {
+                        var num = (i * 4 + j);
+                        tr.append($('<td id=num_' + num + '>').html(num));
+                    }
+                    $('#disp').append(tr);
+                }
+                
+                // numと同じ数だけ要素が入る空の配列を用意
+                var serial = new Array(num);
+                // 空の配列へ数を順番に並べる
+                var number = 1;
+                for(var i = 0; i < serial.length; i++) {
+                    serial[i] = number;
+                    number++
+                }
+                // 連番の配列をランダムに並び替え
+                for(var i = (serial.length - 1); i >=0; i--) {
+                    var rand = Math.floor(Math.random() * serial.length);
+                    [serial[i],serial[rand]] = [serial[rand],serial[i]]
+                }
+                var shuffle = serial;
+                
+                // stopを押すまでランダムに色を点滅させる
+                function roul_disp() {
+                    $('td').css('background-color','#ffffff');
+                    var hit = Math.floor(Math.random() * 17 + 1);
+                    $('#num_' + hit).css('background-color','#ffa500');
+                }
+                // shuffleの配列が0になったら押せないようにする
+                function roul_start() {
+                    if(key <= (shuffle.length - 1) && start_flag === false) {
+                        interval_id = setInterval(roul_disp, 30);
+                        start_flag = true;
+                    }
+                }
+                // stopを押すたびにshuffle[0]から順に表示
+                var key = 0;
+                function roul_stop() {
+                    if(key <= (shuffle.length - 1) && start_flag === true ) {
+                        $('td').css('background-color','#ffffff');
+                        $('#num_' + shuffle[key]).css('background-color','#ffa500');
+                        $('#num_' + shuffle[key]).css('color','#d3381c');
+                        key++
+                        clearInterval(interval_id);
+                        start_flag = false;
+                      // shuffleを全部表示したらスタートを押せないようにする
+                    } else if(key >= shuffle.length) {
+                        start_flag = true
+                    }
+                }
+                // 全ての背景色を白に戻し、keyを0に戻す
+                function roul_reset() {
+                    key = 0;
+                    $('td').css({'background-color':'#ffffff','color':'#000000'});
+                    clearInterval(interval_id);
+                    start_flag = false;
+                }
+                $('#start').click(roul_start);
+                $('#stop').click(roul_stop);
+                $('#reset').click(roul_reset);
+            });
+        </script>
+    </head>
+    <body>
+        <table id="disp"></table>
+        <div>
+            <button id="start">スタート</button>
+            <button id="stop">ストップ</button>
+            <button id="reset">リセット</button>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,35 @@
+tr, td {
+    border: solid #000000 1px;
+    padding: 20px;
+    font-size: 30px;
+}
+
+table {
+    border: solid 5px;
+    
+    text-align: center;
+    border-collapse: collapse;
+}
+
+button {
+    font-size: 20px;
+}
+
+div {
+    margin-top: 10px;
+    text-align: center;
+}
+
+body {
+    width: 333px;
+    margin: 0 auto;
+}
+
+p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.hit {
+    background-color: #ff8c00;
+}
